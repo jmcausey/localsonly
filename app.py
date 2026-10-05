@@ -90,15 +90,7 @@ def get_json(base, path):
 def index():
     weather = get_json(WEATHER_SERVICE_URL, "/api/current")
     astronomy = get_json(ASTRONOMY_SERVICE_URL, "/api/latest")
-    return render_template(
-        "index.html",
-        weather=weather,
-        astronomy=astronomy,
-        cl_url=CL_PUBLIC_URL,
-        weather_url=WEATHER_PUBLIC_URL,
-        astronomy_url=ASTRONOMY_PUBLIC_URL,
-        meta_url=META_PUBLIC_URL,
-    )
+    return render_template("index.html", weather=weather, astronomy=astronomy, cl_url=CL_PUBLIC_URL, weather_url=WEATHER_PUBLIC_URL, astronomy_url=ASTRONOMY_PUBLIC_URL, meta_url=META_PUBLIC_URL)
 
 
 @app.route("/weather")
@@ -109,6 +101,16 @@ def weather():
 @app.route("/forecast")
 def forecast():
     return render_template("service.html", title="Forecast", service_url=f"{WEATHER_PUBLIC_URL}/forecast")
+
+
+@app.route("/historical")
+def historical():
+    return render_template("service.html", title="Weather Historical Data", service_url=f"{WEATHER_PUBLIC_URL}/historical")
+
+
+@app.route("/weather/control")
+def weather_control():
+    return render_template("service.html", title="Weather Control Panel", service_url=f"{WEATHER_PUBLIC_URL}/control")
 
 
 @app.route("/astronomy")
