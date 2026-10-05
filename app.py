@@ -17,9 +17,11 @@ if app.config["GOOGLE_CLIENT_ID"] and app.config["GOOGLE_CLIENT_SECRET"]:
 
 CL_SERVICE_URL = os.getenv("CL_SERVICE_URL", "http://cl:5001").rstrip("/")
 WEATHER_SERVICE_URL = os.getenv("WEATHER_SERVICE_URL", "http://weather:5002").rstrip("/")
+META_SERVICE_URL = os.getenv("META_SERVICE_URL", "http://meta-web-1:5004").rstrip("/")
 ASTRONOMY_SERVICE_URL = os.getenv("ASTRONOMY_SERVICE_URL", "http://astronomy:5003").rstrip("/")
 CL_PUBLIC_URL = os.getenv("CL_PUBLIC_URL", CL_SERVICE_URL).rstrip("/")
 WEATHER_PUBLIC_URL = os.getenv("WEATHER_PUBLIC_URL", WEATHER_SERVICE_URL).rstrip("/")
+META_PUBLIC_URL = os.getenv("META_PUBLIC_URL", "http://localhost:5004").rstrip("/")
 ASTRONOMY_PUBLIC_URL = os.getenv("ASTRONOMY_PUBLIC_URL", ASTRONOMY_SERVICE_URL).rstrip("/")
 
 
@@ -95,6 +97,7 @@ def index():
         cl_url=CL_PUBLIC_URL,
         weather_url=WEATHER_PUBLIC_URL,
         astronomy_url=ASTRONOMY_PUBLIC_URL,
+        meta_url=META_PUBLIC_URL,
     )
 
 
@@ -111,6 +114,11 @@ def forecast():
 @app.route("/astronomy")
 def astronomy():
     return render_template("service.html", title="Astronomy", service_url=ASTRONOMY_PUBLIC_URL)
+
+
+@app.route("/facebook")
+def facebook():
+    return render_template("service.html", title="Facebook", service_url=META_PUBLIC_URL)
 
 
 @app.route("/listings")
