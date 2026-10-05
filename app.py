@@ -29,9 +29,9 @@ def index():
         "index.html",
         weather=weather,
         astronomy=astronomy,
-        cl_url=CL_SERVICE_URL,
-        weather_url=WEATHER_SERVICE_URL,
-        astronomy_url=ASTRONOMY_SERVICE_URL,
+        cl_url=CL_PUBLIC_URL,
+        weather_url=WEATHER_PUBLIC_URL,
+        astronomy_url=ASTRONOMY_PUBLIC_URL,
     )
 
 
