@@ -13,6 +13,8 @@
   .service-subnav{display:flex;align-items:center;gap:1rem;padding:.5rem 1rem;background:#eef5f8;border-bottom:1px solid #d7e2e8;flex-wrap:wrap}
   .service-subnav a{color:#36515f;text-decoration:none;font-weight:600}
   .service-subnav a:hover{color:#111}
+  .weather-metrics{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-left:auto}
+  .weather-badge{background:#dce9ef;color:#36515f;padding:.25rem .55rem;border-radius:999px;font-size:.8rem;font-weight:600;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -33,10 +35,19 @@
   </nav>
 </header>
 
-{% if request.path in ['/weather', '/forecast'] %}
+{% if request.path in ['/weather', '/forecast', '/historical', '/weather/control'] %}
 <nav class="service-subnav" aria-label="Weather navigation">
   <a href="{{ url_for('weather') }}">Current Weather</a>
   <a href="{{ url_for('forecast') }}">Forecast</a>
+  <a href="{{ url_for('historical') }}">Historical Data</a>
+  <a href="{{ url_for('weather_control') }}">Control Panel</a>
+  <div class="weather-metrics">
+    <span class="weather-badge"><span id="nav-location-display">--</span></span>
+    <span class="weather-badge">temp: <span id="nav-temp-display">--</span>°</span>
+    <span class="weather-badge">humidity: <span id="nav-humidity-display">--</span>%</span>
+    <span class="weather-badge">wind: <span id="nav-windspeed-display">--</span> mph</span>
+    <span class="weather-badge">dir: <span id="nav-winddir-display">--</span></span>
+  </div>
 </nav>
 {% elif request.path in ['/astronomy', '/apod'] %}
 <nav class="service-subnav" aria-label="Astronomy navigation">
@@ -68,6 +79,36 @@
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  function getCardinalDirection(d) {
+    const a = Number(d);
+    if (isNaN(a)) return "N/A";
+    return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(a / 45) % 8];
+  }
+  async function fetchMetric(path, id, transform = (v) => v) {
+    try {
+      const r = await fetch(path);
+      const d = await r.json();
+      const e = document.getElementById(id);
+      if (e && d) {
+        const k = Object.keys(d)[0];
+        if (d[k] != null) e.textContent = transform(d[k]);
+      }
+    } catch (e) {}
+  }
+  if (document.getElementById("nav-temp-display")) {
+    async function refreshWeatherMetrics() {
+      await Promise.all([
+        fetchMetric("{{ weather_url }}/api/latest-temp", "nav-temp-display"),
+        fetchMetric("{{ weather_url }}/api/latest-humidity", "nav-humidity-display"),
+        fetchMetric("{{ weather_url }}/api/latest-windspeed", "nav-windspeed-display"),
+        fetchMetric("{{ weather_url }}/api/latest-wind-direction", "nav-winddir-display", getCardinalDirection),
+        fetchMetric("{{ weather_url }}/api/current-location", "nav-location-display"),
+      ]);
+    }
+    refreshWeatherMetrics();
+    setInterval(refreshWeatherMetrics, 15 * 60 * 1000);
+  }
 </script>
 </body>
 </html>
