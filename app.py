@@ -141,10 +141,26 @@ def astronomy_historical():
 def astronomy_control():
     return render_template("service.html", title="Astronomy Control Panel", service_url=f"{ASTRONOMY_PUBLIC_URL}/control")
 
+@app.route("/apod")
+def apod():
+    return render_template("service.html", title="APOD", service_url=f"{ASTRONOMY_PUBLIC_URL}/apod")
+
+@app.route("/astronomy/historical")
+def astronomy_historical():
+    return render_template("service.html", title="Astronomy Historical Data", service_url=f"{ASTRONOMY_PUBLIC_URL}/historical")
+
+@app.route("/astronomy/control")
+def astronomy_control():
+    return render_template("service.html", title="Astronomy Control Panel", service_url=f"{ASTRONOMY_PUBLIC_URL}/control")
+
 
 @app.route("/facebook")
 def facebook():
     return render_template("service.html", title="Facebook", service_url=META_PUBLIC_URL)
+
+@app.route("/facebook/control")
+def facebook_control():
+    return render_template("service.html", title="Facebook Control Panel", service_url=f"{META_PUBLIC_URL}/control")
 
 @app.route("/facebook/control")
 def facebook_control():
