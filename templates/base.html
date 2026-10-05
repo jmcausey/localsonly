@@ -85,30 +85,30 @@
     if (isNaN(a)) return "N/A";
     return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(a / 45) % 8];
   }
-  async function fetchMetric(path, id, transform = (v) => v) {
+  async function refreshWeatherMetrics() {
     try {
-      const r = await fetch(path);
+      const r = await fetch("/api/weather-metrics");
+      if (!r.ok) throw new Error("Weather metrics request failed");
       const d = await r.json();
-      const e = document.getElementById(id);
-      if (e && d) {
-        const k = Object.keys(d)[0];
-        if (d[k] != null) e.textContent = transform(d[k]);
-      }
-    } catch (e) {}
+
+      const temp = document.getElementById("nav-temp-display");
+      const humidity = document.getElementById("nav-humidity-display");
+      const windspeed = document.getElementById("nav-windspeed-display");
+      const winddir = document.getElementById("nav-winddir-display");
+      const location = document.getElementById("nav-location-display");
+
+      if (temp && d.temperature != null) temp.textContent = d.temperature;
+      if (humidity && d.humidity != null) humidity.textContent = d.humidity;
+      if (windspeed && d.windspeed != null) windspeed.textContent = d.windspeed;
+      if (winddir && d.wind_degrees != null) winddir.textContent = getCardinalDirection(d.wind_degrees);
+      if (location && d.location != null) location.textContent = d.location;
+    } catch (e) {
+      console.error("Unable to refresh weather metrics:", e);
+    }
   }
   if (document.getElementById("nav-temp-display")) {
-    async function refreshWeatherMetrics() {
-      await Promise.all([
-        fetchMetric("{{ weather_url }}/api/latest-temp", "nav-temp-display"),
-        fetchMetric("{{ weather_url }}/api/latest-humidity", "nav-humidity-display"),
-        fetchMetric("{{ weather_url }}/api/latest-windspeed", "nav-windspeed-display"),
-        fetchMetric("{{ weather_url }}/api/latest-wind-direction", "nav-winddir-display", getCardinalDirection),
-        fetchMetric("{{ weather_url }}/api/current-location", "nav-location-display"),
-      ]);
-    }
     refreshWeatherMetrics();
     setInterval(refreshWeatherMetrics, 15 * 60 * 1000);
-  }
-</script>
+  }</script>
 </body>
 </html>
