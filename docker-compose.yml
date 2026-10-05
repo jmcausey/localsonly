@@ -9,9 +9,11 @@ services:
       CL_SERVICE_URL: http://cl-web-1:5001
       WEATHER_SERVICE_URL: http://weather-web-1:5002
       ASTRONOMY_SERVICE_URL: http://astronomy-web-1:5003
+      META_SERVICE_URL: http://meta-web-1:5004
       CL_PUBLIC_URL: ${CL_PUBLIC_URL:-http://localhost:5001}
       WEATHER_PUBLIC_URL: ${WEATHER_PUBLIC_URL:-http://localhost:5002}
       ASTRONOMY_PUBLIC_URL: ${ASTRONOMY_PUBLIC_URL:-http://localhost:5003}
+      META_PUBLIC_URL: ${META_PUBLIC_URL:-http://localhost:5004}
       FLASK_SECRET_KEY: ${LOCALS_ONLY_SECRET_KEY:-localsonly-change-me}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
