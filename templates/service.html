@@ -2,5 +2,16 @@
 {% block title %}{{ title }} — Locals Only{% endblock %}
 {% block content %}
 <section class="service-header"><span class="eyebrow">LOCALS ONLY</span><h1>{{ title }}</h1><p>Presented by the {{ title }} service.</p></section>
-<iframe class="service-frame" src="{{ service_url }}" title="{{ title }}"></iframe>
+<iframe class="service-frame" src="{{ service_url }}" title="{{ title }}" scrolling="no"></iframe>
+<script>
+  (() => {
+    const frame = document.currentScript.previousElementSibling;
+    const resize = (event) => {
+      if (event.source !== frame.contentWindow) return;
+      if (event.data?.type !== "localsonly-height") return;
+      frame.style.height = Math.max(0, Number(event.data.height) || 0) + "px";
+    };
+    window.addEventListener("message", resize);
+  })();
+</script>
 {% endblock %}
