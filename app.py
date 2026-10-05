@@ -7,6 +7,9 @@ app = Flask(__name__)
 CL_SERVICE_URL = os.getenv("CL_SERVICE_URL", "http://cl:5001").rstrip("/")
 WEATHER_SERVICE_URL = os.getenv("WEATHER_SERVICE_URL", "http://weather:5002").rstrip("/")
 ASTRONOMY_SERVICE_URL = os.getenv("ASTRONOMY_SERVICE_URL", "http://astronomy:5003").rstrip("/")
+CL_PUBLIC_URL = os.getenv("CL_PUBLIC_URL", CL_SERVICE_URL).rstrip("/")
+WEATHER_PUBLIC_URL = os.getenv("WEATHER_PUBLIC_URL", WEATHER_SERVICE_URL).rstrip("/")
+ASTRONOMY_PUBLIC_URL = os.getenv("ASTRONOMY_PUBLIC_URL", ASTRONOMY_SERVICE_URL).rstrip("/")
 
 
 def get_json(base, path):
@@ -34,22 +37,22 @@ def index():
 
 @app.route("/weather")
 def weather():
-    return render_template("service.html", title="Weather", service_url=WEATHER_SERVICE_URL)
+    return render_template("service.html", title="Weather", service_url=WEATHER_PUBLIC_URL)
 
 
 @app.route("/forecast")
 def forecast():
-    return render_template("service.html", title="Forecast", service_url=f"{WEATHER_SERVICE_URL}/forecast")
+    return render_template("service.html", title="Forecast", service_url=f"{WEATHER_PUBLIC_URL}/forecast")
 
 
 @app.route("/astronomy")
 def astronomy():
-    return render_template("service.html", title="Astronomy", service_url=ASTRONOMY_SERVICE_URL)
+    return render_template("service.html", title="Astronomy", service_url=ASTRONOMY_PUBLIC_URL)
 
 
 @app.route("/listings")
 def listings():
-    return render_template("service.html", title="Local Listings", service_url=CL_SERVICE_URL)
+    return render_template("service.html", title="Local Listings", service_url=CL_PUBLIC_URL)
 
 
 @app.route("/health")
