@@ -49,22 +49,22 @@
     <span class="weather-badge">dir: <span id="nav-winddir-display">--</span></span>
   </div>
 </nav>
-{% elif request.path in ['/astronomy', '/apod'] %}
+{% elif request.path in ['/astronomy', '/apod', '/astronomy/historical', '/astronomy/control'] %}
 <nav class="service-subnav" aria-label="Astronomy navigation">
-  <a href="http://127.0.0.1:5003/astronomy">Current Astronomy</a>
-  <a href="http://127.0.0.1:5003/apod">APOD</a>
-  <a href="http://127.0.0.1:5003/historical">Historical Data</a>
-  <a href="http://127.0.0.1:5003/control">Control Panel</a>
+  <a href="{{ url_for('astronomy') }}">Current Astronomy</a>
+  <a href="{{ url_for('apod') }}">APOD</a>
+  <a href="{{ url_for('astronomy_historical') }}">Historical Data</a>
+  <a href="{{ url_for('astronomy_control') }}">Control Panel</a>
 </nav>
-{% elif request.path in ['/listings', '/control'] %}
+{% elif request.path in ['/listings', '/listings/control'] %}
 <nav class="service-subnav" aria-label="CL navigation">
-  <a href="http://127.0.0.1:5001/">Listings</a>
-  <a href="http://127.0.0.1:5001/control">Control Panel</a>
+  <a href="{{ url_for('listings') }}">Listings</a>
+  <a href="{{ url_for('listings_control') }}">Control Panel</a>
 </nav>
-{% elif request.path in ['/facebook'] %}
+{% elif request.path in ['/facebook', '/facebook/control'] %}
 <nav class="service-subnav" aria-label="Facebook navigation">
-  <a href="http://127.0.0.1:5004/">Facebook</a>
-  <a href="http://127.0.0.1:5004/control">Control Panel</a>
+  <a href="{{ url_for('facebook') }}">Facebook</a>
+  <a href="{{ url_for('facebook_control') }}">Control Panel</a>
 </nav>
 {% endif %}
 
