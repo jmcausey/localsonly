@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Locals Only{% endblock %}
+{% block content %}
+<section class="hero">
+  <div><span class="eyebrow">YOUR LOCAL DASHBOARD</span><h1>What's happening<br>around you.</h1><p>Weather, sky conditions, and local listings in one place.</p></div>
+  <div class="orb">◎</div>
+</section>
+
+<div class="dashboard">
+  <a class="panel weather-panel" href="{{ url_for('weather') }}">
+    <div class="panel-head"><span>WEATHER</span><b>→</b></div>
+    {% if weather %}
+      <div class="big">{{ weather.temperature or weather.temp or "—" }}°</div>
+      <h2>{{ weather.description or "Current conditions" }}</h2>
+      <p>{{ weather.location or "Current location" }}</p>
+    {% else %}
+      <h2>Weather</h2><p>Open the Weather service</p>
+    {% endif %}
+  </a>
+
+  <a class="panel sky-panel" href="{{ url_for('astronomy') }}">
+    <div class="panel-head"><span>ASTRONOMY</span><b>→</b></div>
+    {% if astronomy %}
+      <div class="big">☀ ☾</div>
+      <h2>Sun &amp; Moon</h2>
+      <p>{{ astronomy.location or "Current location" }}</p>
+    {% else %}
+      <h2>Current sky</h2><p>Open the Astronomy service</p>
+    {% endif %}
+  </a>
+
+  <a class="panel listings-panel wide" href="{{ url_for('listings') }}">
+    <div class="panel-head"><span>LOCAL LISTINGS</span><b>→</b></div>
+    <h2>What's available nearby?</h2>
+    <p>Browse the Craigslist listings collected by CL.</p>
+  </a>
+
+  <a class="panel forecast-panel wide" href="{{ url_for('forecast') }}">
+    <div class="panel-head"><span>FORECAST</span><b>→</b></div>
+    <h2>Plan the next five days.</h2>
+    <p>Live OpenWeather forecast for your configured location.</p>
+  </a>
+</div>
+{% endblock %}
