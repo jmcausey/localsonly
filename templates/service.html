@@ -9,9 +9,16 @@
     const resize = (event) => {
       if (event.source !== frame.contentWindow) return;
       if (event.data?.type !== "localsonly-height") return;
-      frame.style.height = Math.max(0, Number(event.data.height) || 0) + "px";
+      const height = Math.max(100, Number(event.data.height) || 0);
+      frame.style.height = height + "px";
+    };
+    const requestHeight = () => {
+      try { frame.contentWindow.postMessage({type: "localsonly-request-height"}, "*"); } catch (e) {}
     };
     window.addEventListener("message", resize);
+    frame.addEventListener("load", requestHeight);
+    window.addEventListener("load", requestHeight);
+    setTimeout(requestHeight, 250);
   })();
 </script>
 {% endblock %}
