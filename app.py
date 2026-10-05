@@ -95,40 +95,64 @@ def index():
 
 @app.route("/weather")
 def weather():
-    return render_template("service.html", title="Weather", service_url=WEATHER_PUBLIC_URL)
+    return render_template("service.html", title="Weather", service_url=WEATHER_PUBLIC_URL, weather_url=WEATHER_PUBLIC_URL)
 
 
 @app.route("/forecast")
 def forecast():
-    return render_template("service.html", title="Forecast", service_url=f"{WEATHER_PUBLIC_URL}/forecast")
+    return render_template("service.html", title="Forecast", service_url=f"{WEATHER_PUBLIC_URL}/forecast", weather_url=WEATHER_PUBLIC_URL)
 
 
 @app.route("/historical")
 def historical():
-    return render_template("service.html", title="Weather Historical Data", service_url=f"{WEATHER_PUBLIC_URL}/historical")
+    return render_template("service.html", title="Weather Historical Data", service_url=f"{WEATHER_PUBLIC_URL}/historical", weather_url=WEATHER_PUBLIC_URL)
 
 
 @app.route("/weather/control")
 def weather_control():
-    return render_template("service.html", title="Weather Control Panel", service_url=f"{WEATHER_PUBLIC_URL}/control")
+    return render_template("service.html", title="Weather Control Panel", service_url=f"{WEATHER_PUBLIC_URL}/control", weather_url=WEATHER_PUBLIC_URL)
 
 
 @app.route("/astronomy")
 def astronomy():
     return render_template("service.html", title="Astronomy", service_url=ASTRONOMY_PUBLIC_URL)
 
+@app.route("/apod")
+def apod():
+    return render_template("service.html", title="APOD", service_url=f"{ASTRONOMY_PUBLIC_URL}/apod")
+
+@app.route("/astronomy/historical")
+def astronomy_historical():
+    return render_template("service.html", title="Astronomy Historical Data", service_url=f"{ASTRONOMY_PUBLIC_URL}/historical")
+
+@app.route("/astronomy/control")
+def astronomy_control():
+    return render_template("service.html", title="Astronomy Control Panel", service_url=f"{ASTRONOMY_PUBLIC_URL}/control")
+
 
 @app.route("/facebook")
 def facebook():
     return render_template("service.html", title="Facebook", service_url=META_PUBLIC_URL)
 
+@app.route("/facebook/control")
+def facebook_control():
+    return render_template("service.html", title="Facebook Control Panel", service_url=f"{META_PUBLIC_URL}/control")
+
+
+@app.route("/listings")
+def cl_service_path(path, title):
+    if not get_current_user():
+        return redirect(url_for("google_login", next=request.path))
+    service_url = f"{CL_PUBLIC_URL}/auth/sso?next={path}&token={sso_token()}"
+    return render_template("service.html", title=title, service_url=service_url)
 
 @app.route("/listings")
 def listings():
-    if not get_current_user():
-        return redirect(url_for("google_login", next="/listings"))
-    service_url = f"{CL_PUBLIC_URL}/auth/sso?next=/&token={sso_token()}"
-    return render_template("service.html", title="Local Listings", service_url=service_url)
+    return cl_service_path("/", "Local Listings")
+
+@app.route("/listings/control")
+def listings_control():
+    return cl_service_path("/control", "CL Control Panel")
 
 
 @app.route("/health")
