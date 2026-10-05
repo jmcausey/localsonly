@@ -21,6 +21,9 @@ For Docker Compose, service URLs can use container DNS names while public URLs u
 - `CL_PUBLIC_URL` — defaults to `CL_SERVICE_URL`
 - `WEATHER_PUBLIC_URL` — defaults to `WEATHER_SERVICE_URL`
 - `ASTRONOMY_PUBLIC_URL` — defaults to `ASTRONOMY_SERVICE_URL`
+- `FLASK_SECRET_KEY` — session secret for localsonly
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — Google OAuth credentials owned by localsonly
+- `SSO_SECRET` — shared signing secret used for the short-lived CL SSO handoff
 
 For a browser accessing the services through localhost:
 
@@ -63,13 +66,7 @@ Start the front end:
 docker compose up -d --build
 ```
 
-The existing service containers must already be running and their Compose networks must be named:
-
-- `cl_default`
-- `weather_default`
-- `astronomy_default`
-
-If your existing Compose projects use different network names, change the three external network names in `docker-compose.yml`.
+The existing service containers must already be running on the external `cl_shared_data` Docker network.
 
 Open:
 
@@ -78,8 +75,10 @@ http://localhost:5000
 ```
 
 localsonly talks to the services over Docker DNS:
-- `cl:5001`
-- `weather:5002`
-- `astronomy:5003`
+- `cl-web-1:5001`
+- `weather-web-1:5002`
+- `astronomy-web-1:5003`
+
+Google sign-in is owned by localsonly. After authentication, localsonly issues a short-lived signed SSO assertion to CL, where the existing CL `users` record and blog permissions are preserved. Register the Google OAuth callback at `http://localhost:5000/auth/callback` (and `http://127.0.0.1:5000/auth/callback` if you use that hostname).
 
 Your browser follows the public URLs, which default to localhost ports.
