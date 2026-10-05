@@ -10,9 +10,9 @@
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .topbar nav{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
   .live-clock{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
-  .weather-subnav{display:flex;align-items:center;gap:1rem;padding:.5rem 1rem;background:#eef5f8;border-bottom:1px solid #d7e2e8}
-  .weather-subnav a{color:#36515f;text-decoration:none;font-weight:600}
-  .weather-subnav a:hover{color:#111}
+  .service-subnav{display:flex;align-items:center;gap:1rem;padding:.5rem 1rem;background:#eef5f8;border-bottom:1px solid #d7e2e8}
+  .service-subnav a{color:#36515f;text-decoration:none;font-weight:600}
+  .service-subnav a:hover{color:#111}
 </style>
 </head>
 <body>
@@ -32,10 +32,21 @@
     {% endif %}
   </nav>
 </header>
-<nav class="weather-subnav" aria-label="Weather navigation">
+
+{% if request.path in ['/weather', '/forecast'] %}
+<nav class="service-subnav" aria-label="Weather navigation">
   <a href="{{ url_for('weather') }}">Current Weather</a>
   <a href="{{ url_for('forecast') }}">Forecast</a>
 </nav>
+{% elif request.path in ['/astronomy'] %}
+<nav class="service-subnav" aria-label="Astronomy navigation">
+  <a href="http://127.0.0.1:5003/astronomy">Current Astronomy</a>
+  <a href="http://127.0.0.1:5003/apod">APOD</a>
+  <a href="http://127.0.0.1:5003/historical">Historical Data</a>
+  <a href="http://127.0.0.1:5003/control">Control Panel</a>
+</nav>
+{% endif %}
+
 <main>{% block content %}{% endblock %}</main>
 <footer>Local information from CL · Weather · Astronomy</footer>
 <script>
