@@ -6,6 +6,11 @@
 <meta http-equiv="refresh" content="900">
 <title>{% block title %}Locals Only{% endblock %}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .topbar nav{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  .live-clock{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -16,6 +21,7 @@
     <a href="{{ url_for('astronomy') }}">Astronomy</a>
     <a href="{{ url_for('listings') }}">CL</a>
     <a href="{{ url_for('facebook') }}">FB</a>
+    <span class="live-clock" id="live-clock" aria-label="Current time">--:--:-- --</span>
     {% if current_user %}
       <span>{{ current_user.name or current_user.email }}</span>
       <a href="{{ url_for('google_logout') }}">Log out</a>
@@ -26,5 +32,15 @@
 </header>
 <main>{% block content %}{% endblock %}</main>
 <footer>Local information from CL · Weather · Astronomy</footer>
+<script>
+  function updateClock() {
+    const e = document.getElementById("live-clock");
+    if (e) e.textContent = new Date().toLocaleTimeString("en-US", {
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+    });
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
 </body>
 </html>
