@@ -11,11 +11,16 @@
 <header class="topbar">
   <a class="brand" href="{{ url_for('index') }}">LOCALS ONLY</a>
   <nav>
-    <a href="{{ url_for('index') }}">Home</a>
     <a href="{{ url_for('weather') }}">Weather</a>
     <a href="{{ url_for('forecast') }}">Forecast</a>
     <a href="{{ url_for('astronomy') }}">Astronomy</a>
     <a href="{{ url_for('listings') }}">Listings</a>
+    {% if current_user %}
+      <span>{{ current_user.name or current_user.email }}</span>
+      <a href="{{ url_for('google_logout') }}">Log out</a>
+    {% else %}
+      <a href="{{ url_for('google_login') }}">Login</a>
+    {% endif %}
   </nav>
 </header>
 <main>{% block content %}{% endblock %}</main>
