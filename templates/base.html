@@ -10,6 +10,9 @@
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
   .topbar nav{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
   .live-clock{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+  .weather-subnav{display:flex;align-items:center;gap:1rem;padding:.5rem 1rem;background:#eef5f8;border-bottom:1px solid #d7e2e8}
+  .weather-subnav a{color:#36515f;text-decoration:none;font-weight:600}
+  .weather-subnav a:hover{color:#111}
 </style>
 </head>
 <body>
@@ -17,7 +20,6 @@
   <a class="brand" href="{{ url_for('index') }}">LOCALS ONLY</a>
   <nav>
     <a href="{{ url_for('weather') }}">Weather</a>
-    <a href="{{ url_for('forecast') }}">Forecast</a>
     <a href="{{ url_for('astronomy') }}">Astronomy</a>
     <a href="{{ url_for('listings') }}">CL</a>
     <a href="{{ url_for('facebook') }}">FB</a>
@@ -30,6 +32,10 @@
     {% endif %}
   </nav>
 </header>
+<nav class="weather-subnav" aria-label="Weather navigation">
+  <a href="{{ url_for('weather') }}">Current Weather</a>
+  <a href="{{ url_for('forecast') }}">Forecast</a>
+</nav>
 <main>{% block content %}{% endblock %}</main>
 <footer>Local information from CL · Weather · Astronomy</footer>
 <script>
