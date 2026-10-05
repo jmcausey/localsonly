@@ -1,5 +1,5 @@
 import os
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 import requests
 from authlib.integrations.flask_client import OAuth
 from itsdangerous import URLSafeTimedSerializer
@@ -91,6 +91,27 @@ def get_json(base, path):
         return response.json()
     except requests.RequestException:
         return None
+
+@app.route("/api/weather-metrics")
+def weather_metrics():
+    """Return navbar weather metrics through the same LOCALS ONLY origin."""
+    temperature = get_json(WEATHER_SERVICE_URL, "/api/latest-temp") or {}
+    humidity = get_json(WEATHER_SERVICE_URL, "/api/latest-humidity") or {}
+    windspeed = get_json(WEATHER_SERVICE_URL, "/api/latest-windspeed") or {}
+    wind_direction = get_json(WEATHER_SERVICE_URL, "/api/latest-wind-direction") or {}
+    location = get_json(WEATHER_SERVICE_URL, "/api/current-location") or {}
+
+    raw_temperature = temperature.get("temperature")
+    if isinstance(raw_temperature, str):
+        raw_temperature = raw_temperature.rstrip("°")
+
+    return jsonify({
+        "temperature": raw_temperature,
+        "humidity": humidity.get("humidity"),
+        "windspeed": windspeed.get("windspeed"),
+        "wind_degrees": wind_direction.get("wind_degrees"),
+        "location": location.get("location"),
+    })
 
 @app.route("/")
 def index():
