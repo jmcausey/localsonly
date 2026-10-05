@@ -51,3 +51,35 @@ Then open `http://localhost:5000`.
 - `/astronomy` — Astronomy service
 - `/listings` — CL
 - `/health` — front-end health check
+
+
+## Docker Compose
+
+The Compose file runs localsonly on port 5000 and connects it to the existing CL, Weather, and Astronomy Docker networks.
+
+Start the front end:
+
+```bash
+docker compose up -d --build
+```
+
+The existing service containers must already be running and their Compose networks must be named:
+
+- `cl_default`
+- `weather_default`
+- `astronomy_default`
+
+If your existing Compose projects use different network names, change the three external network names in `docker-compose.yml`.
+
+Open:
+
+```
+http://localhost:5000
+```
+
+localsonly talks to the services over Docker DNS:
+- `cl:5001`
+- `weather:5002`
+- `astronomy:5003`
+
+Your browser follows the public URLs, which default to localhost ports.
