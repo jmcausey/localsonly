@@ -6,12 +6,16 @@ services:
     ports:
       - "5000:5000"
     environment:
-      CL_SERVICE_URL: http://cl:5001
-      WEATHER_SERVICE_URL: http://weather:5002
-      ASTRONOMY_SERVICE_URL: http://astronomy:5003
+      CL_SERVICE_URL: http://cl-web-1:5001
+      WEATHER_SERVICE_URL: http://weather-web-1:5002
+      ASTRONOMY_SERVICE_URL: http://astronomy-web-1:5003
       CL_PUBLIC_URL: ${CL_PUBLIC_URL:-http://localhost:5001}
       WEATHER_PUBLIC_URL: ${WEATHER_PUBLIC_URL:-http://localhost:5002}
       ASTRONOMY_PUBLIC_URL: ${ASTRONOMY_PUBLIC_URL:-http://localhost:5003}
+      FLASK_SECRET_KEY: ${LOCALS_ONLY_SECRET_KEY:-localsonly-change-me}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      SSO_SECRET: ${SSO_SECRET:-localsonly-sso-change-me}
     networks:
       - cl_shared_data
 
