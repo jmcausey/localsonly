@@ -1,0 +1,29 @@
+services:
+  localsonly:
+    build: .
+    container_name: localsonly
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      CL_SERVICE_URL: http://cl:5001
+      WEATHER_SERVICE_URL: http://weather:5002
+      ASTRONOMY_SERVICE_URL: http://astronomy:5003
+      CL_PUBLIC_URL: ${CL_PUBLIC_URL:-http://localhost:5001}
+      WEATHER_PUBLIC_URL: ${WEATHER_PUBLIC_URL:-http://localhost:5002}
+      ASTRONOMY_PUBLIC_URL: ${ASTRONOMY_PUBLIC_URL:-http://localhost:5003}
+    networks:
+      - localsonly
+      - cl_default
+      - weather_default
+      - astronomy_default
+
+networks:
+  localsonly:
+    driver: bridge
+  cl_default:
+    external: true
+  weather_default:
+    external: true
+  astronomy_default:
+    external: true
