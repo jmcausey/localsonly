@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Locals Only{% endblock %}
+{% block content %}
+<section class="service-header"><span class="eyebrow">LOCALS ONLY</span><h1>{{ title }}</h1><p>Presented by the {{ title }} service.</p></section>
+<iframe class="service-frame" src="{{ service_url }}" title="{{ title }}"></iframe>
+{% endblock %}
